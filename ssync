@@ -1,0 +1,21 @@
+#!/bin/bash
+PATH_TO_SCRIPT='servercopy.php'
+
+
+
+
+if [ -d $1 ]; then
+	echo 
+else
+  	echo is no directory
+	exit -1
+
+fi
+
+inotifywait --recursive --monitor --quiet --event modify,create,delete,move,attrib --format '%w%f' $1 |
+  while read FILE ; do
+#	echo  $PATH_TO_SCRIPT  
+	#echo $(cd $(dirname $FILE); pwd)/$(basename $FILE)
+    	$PATH_TO_SCRIPT $1 $FILE
+	echo `date` done 
+  done
